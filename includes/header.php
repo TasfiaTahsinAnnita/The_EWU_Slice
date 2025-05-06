@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domino's Inspired Platform</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- PWA Manifest Link -->
     <link rel="manifest" href="/manifest.json">
     <!-- Additional PWA Meta Tags -->
@@ -19,7 +19,7 @@
 </head>
 <body>
     <header>
-        <h1>Domino's Pizza Platform</h1>
+        <h1>Domino's Pizza</h1>
         <nav>
             <a href="index.php">Home</a>
             <a href="menu.php">Menu</a>
@@ -37,7 +37,16 @@
         </nav>
     </header>
     <div class="container">
+    <!-- Load all JavaScript files -->
     <script src="js/script.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/tracker.js"></script>
+    <script src="js/geolocation.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/promotions.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/toast.js"></script>
     <script>
         // Register the service worker
         if ('serviceWorker' in navigator) {

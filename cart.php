@@ -9,6 +9,8 @@ if (!$userId) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $response = ['success' => false];
+
     $stmt = $pdo->prepare("SELECT id FROM orders WHERE user_id = ? AND status = 'pending'");
     $stmt->execute([$userId]);
     $orderId = $stmt->fetchColumn();
@@ -37,9 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = $pdo->prepare("UPDATE orders SET total_amount = (SELECT SUM(quantity * price) FROM order_items WHERE order_id = ?) WHERE id = ?");
         $stmt->execute([$orderId, $orderId]);
-
-        echo "Cart updated";
-        exit;
+        $response['success'] = true;
     }
 
     if (isset($_POST['action']) && $_POST['action'] === 'remove') {
@@ -49,10 +49,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = $pdo->prepare("UPDATE orders SET total_amount = (SELECT SUM(quantity * price) FROM order_items WHERE order_id = ?) WHERE id = ?");
         $stmt->execute([$orderId, $orderId]);
-
-        echo "Item removed";
-        exit;
+        $response['success'] = true;
     }
+
+    if (isset($_POST['action']) && $_POST['action'] === 'get') {
+        $stmt = $pdo->prepare("SELECT o.id AS order_id, oi.menu_item_id, mi.name, oi.quantity, oi.price 
+                               FROM orders o 
+                               JOIN order_items oi ON o.id = oi.order_id 
+                               JOIN menu_items mi ON oi.menu_item_id = mi.id 
+                               WHERE o.user_id = ? AND o.status = 'pending'");
+        $stmt->execute([$userId]);
+        $items = $stmt->fetchAll();
+
+        $stmt = $pdo->prepare("SELECT total_amount FROM orders WHERE user_id = ? AND status = 'pending'");
+        $stmt->execute([$userId]);
+        $total = $stmt->fetchColumn() ?: 0;
+
+        $response = [
+            'success' => true,
+            'items' => $items,
+            'total' => $total
+        ];
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
 }
 
 $cartItems = [];

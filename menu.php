@@ -13,8 +13,15 @@ $items = $stmt->fetchAll();
 ?>
 
 <h2>Menu</h2>
+<div class="filter-buttons">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="main">Main</button>
+    <button class="filter-btn" data-category="sides">Sides</button>
+    <button class="filter-btn" data-category="desserts">Desserts</button>
+</div>
+
 <?php foreach ($items as $item): ?>
-    <div class="menu-item">
+    <div class="menu-item" data-category="<?php echo $item['category']; ?>">
         <div>
             <h3><?php echo $item['name']; ?> (<?php echo ucfirst($item['category']); ?>)</h3>
             <p>Price: ৳<?php echo $item['price']; ?></p>

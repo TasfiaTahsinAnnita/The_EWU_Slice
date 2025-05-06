@@ -11,6 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId) {
 
     $stmt = $pdo->prepare("INSERT INTO reviews (order_id, user_id, rating, comment) VALUES (?, ?, ?, ?)");
     $stmt->execute([$orderId, $userId, $rating, $comment]);
+    // Redirect to avoid form resubmission
+    header("Location: reviews.php?submitted=1");
+    exit;
 }
 
 $stmt = $pdo->query("SELECT r.*, o.id AS order_id, mi.name AS item_name 
@@ -29,6 +32,11 @@ if ($userId) {
 ?>
 
 <h2>Reviews & Ratings</h2>
+
+<?php if (isset($_GET['submitted'])): ?>
+    <script>showToast('Review submitted successfully!');</script>
+<?php endif; ?>
+
 <div class="review-section">
     <h3>Submit a Review</h3>
     <?php if ($userId && !empty($orders)): ?>
