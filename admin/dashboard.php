@@ -25,39 +25,96 @@ $stmt = $pdo->query("SELECT o.*, u.username FROM orders o JOIN users u ON o.user
 $orders = $stmt->fetchAll();
 ?>
 
-<h2>Admin Dashboard</h2>
-<div class="profile-section">
-    <h3>Add Menu Item</h3>
-    <form method="POST">
-        <label>Store:</label>
-        <select name="store_id">
-            <?php
-            $stmt = $pdo->query("SELECT * FROM stores");
-            while ($store = $stmt->fetch()) {
-                echo "<option value='{$store['id']}'>{$store['name']}</option>";
-            }
-            ?>
-        </select><br>
-        <label>Name: <input type="text" name="name" required></label><br>
-        <label>Category: <select name="category"><option value="main">Main</option><option value="sides">Sides</option><option value="desserts">Desserts</option></select></label><br>
-        <label>Price: <input type="number" name="price" step="0.01" required></label><br>
-        <label>Stock: <input type="number" name="stock" required></label><br>
-        <button type="submit" name="add_item">Add Item</button>
-    </form>
-</div>
+<!-- Add Bootstrap CSS CDN if not already included -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="profile-section">
-    <h3>Menu Items</h3>
-    <?php foreach ($items as $item): ?>
-        <p><?php echo $item['name']; ?> - ৳<?php echo $item['price']; ?> (Stock: <?php echo $item['stock']; ?>)</p>
-    <?php endforeach; ?>
-</div>
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Admin Dashboard</h2>
 
-<div class="profile-section">
-    <h3>Live Orders</h3>
-    <?php foreach ($orders as $order): ?>
-        <p>Order #<?php echo $order['id']; ?> by <?php echo $order['username']; ?> - Status: <?php echo $order['status']; ?></p>
-    <?php endforeach; ?>
+    <!-- Add Menu Item Form -->
+    <div class="card mb-5 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Add Menu Item</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Store</label>
+                    <select name="store_id" class="form-select" required>
+                        <?php
+                        $stmt = $pdo->query("SELECT * FROM stores");
+                        while ($store = $stmt->fetch()) {
+                            echo "<option value='{$store['id']}'>{$store['name']}</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <select name="category" class="form-select">
+                        <option value="main">Main</option>
+                        <option value="sides">Sides</option>
+                        <option value="desserts">Desserts</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Price (৳)</label>
+                    <input type="number" step="0.01" name="price" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Stock</label>
+                    <input type="number" name="stock" class="form-control" required>
+                </div>
+                <button type="submit" name="add_item" class="btn btn-success">Add Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Menu Items Section -->
+    <div class="card mb-5 shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Menu Items</h5>
+        </div>
+        <div class="card-body">
+            <?php if (count($items) > 0): ?>
+                <ul class="list-group">
+                    <?php foreach ($items as $item): ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <?php echo htmlspecialchars($item['name']); ?> (<?php echo ucfirst($item['category']); ?>)
+                            <span class="badge bg-primary rounded-pill">৳<?php echo $item['price']; ?> | Stock: <?php echo $item['stock']; ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p class="text-muted">No items found.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Orders Section -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning">
+            <h5 class="mb-0">Live Orders</h5>
+        </div>
+        <div class="card-body">
+            <?php if (count($orders) > 0): ?>
+                <ul class="list-group">
+                    <?php foreach ($orders as $order): ?>
+                        <li class="list-group-item">
+                            <strong>Order #<?php echo $order['id']; ?></strong> by <?php echo htmlspecialchars($order['username']); ?> -
+                            <span class="badge bg-secondary"><?php echo ucfirst($order['status']); ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p class="text-muted">No live orders found.</p>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
 
 <?php include '../includes/footer.php'; ?>
