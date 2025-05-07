@@ -1,4 +1,4 @@
-CREATE DATABASE domino_pizza;
+CREATE DATABASE IF NOT EXISTS domino_pizza;
 USE domino_pizza;
 
 -- Users Table
@@ -10,7 +10,7 @@ CREATE TABLE users (
     contact_number VARCHAR(20) DEFAULT NULL,
     address TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB;
 
 -- Stores Table
 CREATE TABLE stores (
@@ -20,7 +20,7 @@ CREATE TABLE stores (
     zip_code VARCHAR(10),
     delivery_zones TEXT,
     operating_hours VARCHAR(50)
-);
+) ENGINE=InnoDB;
 
 -- Menu Items Table
 CREATE TABLE menu_items (
@@ -31,7 +31,7 @@ CREATE TABLE menu_items (
     price DECIMAL(10, 2) NOT NULL,
     stock INT DEFAULT 100,
     FOREIGN KEY (store_id) REFERENCES stores(id)
-);
+) ENGINE=InnoDB;
 
 -- Orders Table
 CREATE TABLE orders (
@@ -42,8 +42,10 @@ CREATE TABLE orders (
     status ENUM('pending', 'preparing', 'cooking', 'delivered', 'cancelled') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (store_id) REFERENCES stores(id)
-);
+    FOREIGN KEY (store_id) REFERENCES stores(id),
+    INDEX idx_user_id (user_id),
+    INDEX idx_store_id (store_id)
+) ENGINE=InnoDB;
 
 -- Order Items Table
 CREATE TABLE order_items (
@@ -53,8 +55,10 @@ CREATE TABLE order_items (
     quantity INT,
     price DECIMAL(10, 2),
     FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
-);
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id),
+    INDEX idx_order_id (order_id),
+    INDEX idx_menu_item_id (menu_item_id)
+) ENGINE=InnoDB;
 
 -- Vouchers Table
 CREATE TABLE vouchers (
@@ -64,8 +68,9 @@ CREATE TABLE vouchers (
     amount DECIMAL(10, 2) NOT NULL,
     expiry_date DATE NOT NULL,
     used BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB;
 
 -- Reviews Table
 CREATE TABLE reviews (
@@ -76,8 +81,10 @@ CREATE TABLE reviews (
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    INDEX idx_order_id (order_id),
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB;
 
 -- Delivery Zones Table
 CREATE TABLE delivery_zones (
@@ -86,8 +93,9 @@ CREATE TABLE delivery_zones (
     zone_name VARCHAR(100),
     min_order_amount DECIMAL(10, 2),
     delivery_fee DECIMAL(10, 2),
-    FOREIGN KEY (store_id) REFERENCES stores(id)
-);
+    FOREIGN KEY (store_id) REFERENCES stores(id),
+    INDEX idx_store_id (store_id)
+) ENGINE=InnoDB;
 
 -- Sample Data
 INSERT INTO stores (name, city, zip_code, operating_hours) 
@@ -114,13 +122,13 @@ VALUES
 INSERT INTO orders (user_id, store_id, total_amount, status, created_at) 
 VALUES 
 (1, 1, 650.00, 'delivered', '2025-03-15 10:00:00'),
-(1, 1, 500.00, 'preparing', '2025-03-16 12:00:00');
+(1, 1, 0.00, 'pending', '2025-05-07 10:00:00'); -- Added pending order for current date
 
 INSERT INTO order_items (order_id, menu_item_id, quantity, price) 
 VALUES 
 (1, 1, 1, 500.00),
 (1, 3, 1, 150.00),
-(2, 1, 1, 500.00);
+(2, 1, 0, 0.00); -- Adjusted for pending order, quantity 0 for testing
 
 INSERT INTO vouchers (user_id, code, amount, expiry_date) 
 VALUES 

@@ -274,7 +274,7 @@ button:hover {
     justify-content: space-between;
     align-items: center;
     height: 50px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 257, 0.1);
     border-radius: 25px;
     position: relative;
     overflow: hidden;
@@ -480,4 +480,33 @@ footer {
         width: 90%;
         right: 5%;
     }
+}
+
+/* Popup styles for cart */
+.cart-popup {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    background: white !important;
+    padding: 20px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    z-index: 10000 !important; /* Increased z-index to ensure visibility */
+    text-align: center !important;
+    display: block !important;
+}
+
+.cart-popup button {
+    margin: 5px;
+    padding: 10px 20px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart-popup button:hover {
+    background: #1565c0;
 }

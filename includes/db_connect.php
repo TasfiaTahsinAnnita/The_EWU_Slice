@@ -8,6 +8,8 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'error' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
 }
 ?>

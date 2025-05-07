@@ -1,4 +1,10 @@
 <?php session_start(); ?>
+<?php
+// Skip HTML output for AJAX POST requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array($_POST['action'], ['add', 'remove', 'get'])) {
+    return; // Exit early for AJAX calls
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

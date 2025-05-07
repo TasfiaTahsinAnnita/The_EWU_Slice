@@ -1,0 +1,15 @@
+[07-May-2025 06:20:12 Europe/Berlin] PHP Warning:  Undefined variable $pdo in D:\xampp\htdocs\DominoPizzaPlatform\cart.php on line 103
+[07-May-2025 06:20:12 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in D:\xampp\htdocs\DominoPizzaPlatform\cart.php:103
+Stack trace:
+#0 {main}
+  thrown in D:\xampp\htdocs\DominoPizzaPlatform\cart.php on line 103
+[07-May-2025 06:20:13 Europe/Berlin] PHP Warning:  Undefined variable $pdo in D:\xampp\htdocs\DominoPizzaPlatform\cart.php on line 103
+[07-May-2025 06:20:13 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in D:\xampp\htdocs\DominoPizzaPlatform\cart.php:103
+Stack trace:
+#0 {main}
+  thrown in D:\xampp\htdocs\DominoPizzaPlatform\cart.php on line 103
+[07-May-2025 06:20:15 Europe/Berlin] PHP Warning:  Undefined variable $pdo in D:\xampp\htdocs\DominoPizzaPlatform\cart.php on line 103
+[07-May-2025 06:20:15 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in D:\xampp\htdocs\DominoPizzaPlatform\cart.php:103
+Stack trace:
+#0 {main}
+  thrown in D:\xampp\htdocs\DominoPizzaPlatform\cart.php on line 103
