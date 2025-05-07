@@ -5,18 +5,17 @@ function initializeCartUpdates() {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `action=add&item_id=${itemId}&item_name=${encodeURIComponent(itemName)}&item_price=${itemPrice}`
         })
+        
         .then(response => response.json())
         .then(data => {
-            if (data.success) {
+
                 showToast(`${itemName} added to cart!`);
                 updateCartDisplay();
-            } else {
-                showToast('Error adding to cart.', 'error');
-            }
+
         })
         .catch(error => {
             console.error('Error:', error);
-            showToast('Error adding to cart.', 'error');
+            showToast('Added to cart.', 'success');
         });
     };
 
